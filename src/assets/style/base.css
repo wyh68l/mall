@@ -1,0 +1,60 @@
+@charset "UTF-8";
+@import "normalize.css";
+/*主色   tab bar icon 按钮 图案*/
+/*辅助色*/
+/*图案或背景渐变色*/
+/*正确、通过的内容或按钮*/
+/*标识性文字内容或其底色*/
+/*背景色*/
+/*tab bar 背景及深颜色背景上的文字*/
+/*边框的颜色*/
+/*主标题文字*/
+/*tab bar 文字、副标题文字以及内容文字*/
+/*注释性内容*/
+/*新信息提醒*/
+/*隔断颜色*/
+/*定义全局计算移动端像素*/
+/*定义margin*/
+/*定义padding*/
+/*定义line-height*/
+/*定义line-height*/
+/*定义顔色*/
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+p,
+a {
+  color: #333333;
+  font-size: 1.86666667vw;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-size: 2.13333333vw;
+}
+a {
+  text-decoration: none;
+  display: block;
+}
+li {
+  list-style: none;
+}
+img {
+  border: 0;
+  vertical-align: bottom;
+  width: 100%;
+}
+/*清除浮动*/
+.clearfix::after,
+.clearfix::before {
+  content: '';
+  display: block;
+  height: 0;
+  line-height: 0;
+  visibility: hidden;
+  clear: both;
+}
+/*# sourceMappingURL=base.css.map */

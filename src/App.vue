@@ -1,28 +1,34 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+
+      <!--主页面-->
+    <keep-alive>
+      <router-view></router-view>
+    </keep-alive>
+
+
+    <footerBar></footerBar>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import footerBar from "components/commons/footerBar";
+import router from "./router";
+
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
-  }
+      footerBar
+  },
+    router
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped lang="less">
+@import "assets/style/base.less";
+  #app{
+    .value_pt(80vw);
+    .value_mb(100vw);
+  }
 </style>
