@@ -1,9 +1,9 @@
 <template>
     <div class="goodList">
-      <ul>
-        <li v-for="(item,index) in goodsList[0]?goodsList[0].img:[]" :key="index">
+      <ul v-for="(item1,index1) in goodsList?goodsList:[]" :key="index1">
+        <li v-for="(item,index) in item1?item1.img:[]" :key="index">
           <img :src="item" alt="">
-          <a href="">{{goodsList[0].goodsInfo[index]}}</a>
+          <a href="">{{item1.goodsInfo[index]}}</a>
         </li>
       </ul>
     </div>
@@ -14,7 +14,6 @@
         name: "goodList",
         data(){
             return {
-
             }
         },
         props:{
@@ -23,14 +22,6 @@
                 default(){
                     return []
                 }
-            }
-        },
-        mounted(){
-            this.getGoodsList();
-        },
-        methods:{
-            getGoodsList(){
-                console.log(this.goodsList);
             }
         }
     }
@@ -48,7 +39,7 @@
     li{
       .value_el(width,330vw);
       .value_el(height,500vw);
-      .value_mb(20vw);
+      .value_mb(40vw);
 
       img{
         width: 100%;

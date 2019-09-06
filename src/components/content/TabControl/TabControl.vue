@@ -23,17 +23,11 @@
                     return []
                 }
             },
-            goodsType:{
-                type: String,
-                default() {
-                    return "sa"
-                }
-            }
         },
         methods:{
             isActice(index){
                 this.currentIndex = index;
-                console.log(this.goodsType);
+                this.$emit('tabClick',index);
             }
         }
     }

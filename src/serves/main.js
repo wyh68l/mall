@@ -11,8 +11,6 @@ export function getMainData() {
 export function getMainGoods(type,page) {
   return request( {
     url:'/example/mainGoods',
-    params:{
-      type, page
-    }
+    params:{type, page}
   })
 }

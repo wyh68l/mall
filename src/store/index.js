@@ -2,6 +2,6 @@ import Vue from 'vue'
 import vuex from 'vuex'
 Vue.use(vuex)
 
-const vuex = new vuex.store({
+const vuex = new vuex.status({
 
 });
