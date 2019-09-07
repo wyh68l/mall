@@ -27,7 +27,5 @@
 <style scoped lang="less">
   @import "assets/style/base.less";
   #app{
-    .value_pt(80vw);
-    .value_mb(100vw);
   }
 </style>

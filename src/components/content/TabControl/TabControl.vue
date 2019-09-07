@@ -38,6 +38,7 @@
 
   .TabControl {
     background-color: #fff;
+    .value_el(height, 80vw);
     ul {
       display: flex;
       justify-content: space-around;

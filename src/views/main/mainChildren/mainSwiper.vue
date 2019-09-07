@@ -1,7 +1,7 @@
 <template>
   <swiper :options="swiperOption" class="swiper-wrap mainSwiper" v-if="bannerList.length!=0">
     <swiper-slide v-for="(item,index) in bannerList" :key="index+'img'">
-      <img :src="item.imgNav" class="title-img""/>
+      <img :src="item.imgNav" class="title-img" @load="swiperLoad"/>
     </swiper-slide>
     <!-- 常见的小圆点 -->
     <div class="swiper-pagination" v-for="(item,index) in bannerList" :key="index" slot="pagination"></div>
@@ -42,6 +42,9 @@
             }
         },
         methods:{
+            swiperLoad(){
+                this.$emit('swiperLoad')
+            }
         },
         components: {
             swiper,

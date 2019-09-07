@@ -4,18 +4,21 @@
       <div slot="center">首页</div>
     </headerBar>
 
+    <!--伪造标题栏吸顶的假象-->
+    <tabControl :titleList="titleList" v-show="!scrollTitleShow" @tabClick="changeTab" ref="tabControl" class="tabControl"></tabControl>
+
     <scroll class="scrollContent" ref="scroll"
             :probeType="3"
             @showStatus="showStatus"
             :pullType="true"
             @pullMore="pullMore"
     >
-      <swiper :bannerList="bannerList"></swiper>
+      <swiper :bannerList="bannerList" @swiperLoad="swiperLoad"></swiper>
       <reviews :reviewsList="reviewsList"></reviews>
       <div class="fake">
         <a href=""><img src="~assets/images/main_fake2.png" alt=""></a>
       </div>
-      <tabControl :titleList="titleList" class="tabControl" @tabClick="changeTab"></tabControl>
+      <tabControl :titleList="titleList" @tabClick="changeTab" ref="tabControl"></tabControl>
       <goodList :goodsList="goods[goodsType].list" id="goodsList"></goodList>
     </scroll>
 
@@ -34,6 +37,7 @@
     import backTop from "components/commons/backTop";
 
     import {getMainData, getMainGoods} from "serves/main";
+    import {debounce} from "commons/utils";
 
     export default {
         name: "index",
@@ -49,7 +53,9 @@
                     'news': {page: 0, list: []},
                     'sell': {page: 0, list: []},
                 },
-                isShow: false
+                isShow: false,
+                scrollTop: 0,
+                scrollTitleShow: true
             }
         },
         created() {
@@ -59,8 +65,9 @@
             this.getMainGoods('news');//获取商品列表--最新
             this.getMainGoods('sell');//获取商品列表--精选
         },
-        mounted(){
+        mounted() {
             this.imgLoad();
+            this.swiperLoad();
         },
         methods: {
             //获取轮播图
@@ -119,6 +126,12 @@
                 } else {
                     this.isShow = false
                 }
+                //解决副标题栏吸顶问题
+                if ((position.y ? position.y : 0) <= -this.scrollTop) {
+                    this.scrollTitleShow = false
+                } else {
+                    this.scrollTitleShow = true
+                }
             },
 
             //下拉加载更多
@@ -128,10 +141,18 @@
 
             //解决scroll下滑卡顿的bug--每次获取到图片数据，都刷新scrol的滑动高度
             imgLoad() {
+                const refresh = debounce(this.$refs.scroll.imgRefresh, 200);
                 this.$bus.$on('loadImg', () => {
-                    this.$refs.scroll.imgRefresh();
+                    refresh();
                 })
+            },
+
+            //解决副标题栏吸顶问题
+            swiperLoad() {
+                console.log(this.$refs.tabControl.$el.offsetTop);
+                this.scrollTop = this.$refs.tabControl.$el.offsetTop;
             }
+
         },
         components: {
             goodList,
@@ -163,8 +184,9 @@
 
     //副标题
     .tabControl {
-      position: sticky; //自动检测高度，变为固定
-      .value_el(top, 80vw);
+      position: absolute;
+      width: 100%;
+      z-index: 10;
     }
 
     //滚动区域
