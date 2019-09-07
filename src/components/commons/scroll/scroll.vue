@@ -65,6 +65,11 @@
             //完成上拉
             finishPull() {
                 this.scroll.finishPullUp()
+            },
+
+            //解决卡顿问题
+            imgRefresh() {
+                this.scroll.refresh();
             }
 
         }

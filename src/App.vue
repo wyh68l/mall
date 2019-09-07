@@ -15,7 +15,6 @@
     import footerBar from "components/commons/footerBar";
     import router from "./router";
 
-
     export default {
         name: 'app',
         components: {

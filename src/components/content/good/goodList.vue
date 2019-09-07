@@ -2,7 +2,7 @@
     <div class="goodList">
       <ul v-for="(item1,index1) in goodsList?goodsList:[]" :key="index1">
         <li v-for="(item,index) in item1?item1.img:[]" :key="index">
-          <img :src="item" alt="">
+          <img :src="item" alt="" @load="imgLoad">
           <a href="">{{item1.goodsInfo[index]}}</a>
         </li>
       </ul>
@@ -23,6 +23,12 @@
                     return []
                 }
             }
+        },
+        methods:{
+            //vue的@load就是原生js的onload方法监听img的src的加载，每当src有值且加载完毕后就会触发这个事件
+            imgLoad(){
+                this.$bus.$emit('loadImg');
+            }
         }
     }
 </script>
@@ -34,7 +40,10 @@
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
-    .value_mt(15vw);
+
+    &:first-of-type{
+      .value_mt(15vw);
+    }
 
     li{
       .value_el(width,330vw);
