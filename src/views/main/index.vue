@@ -5,7 +5,7 @@
     </headerBar>
 
     <!--伪造标题栏吸顶的假象-->
-    <tabControl :titleList="titleList" v-show="!scrollTitleShow" @tabClick="changeTab" ref="tabControl" class="tabControl"></tabControl>
+    <tabControl :titleList="titleList" v-show="!scrollTitleShow" @tabClick="changeTab" ref="tabControl1" class="tabControl"></tabControl>
 
     <scroll class="scrollContent" ref="scroll"
             :probeType="3"
@@ -18,10 +18,11 @@
       <div class="fake">
         <a href=""><img src="~assets/images/main_fake2.png" alt=""></a>
       </div>
-      <tabControl :titleList="titleList" @tabClick="changeTab" ref="tabControl"></tabControl>
+      <tabControl :titleList="titleList" @tabClick="changeTab" ref="tabControl2"></tabControl>
       <goodList :goodsList="goods[goodsType].list" id="goodsList"></goodList>
     </scroll>
 
+    <!--在给组件添加点击事件的时候，要使用@click.native才会有效果-->
     <backTop @click.native="backTop" v-show="isShow"></backTop>
 
   </div>
@@ -36,8 +37,10 @@
     import scroll from "components/commons/scroll/scroll";
     import backTop from "components/commons/backTop";
 
-    import {getMainData, getMainGoods} from "serves/main";
+    import {getMainData, getMainGoods,mainGoodsTest2} from "serves/main";
     import {debounce} from "commons/utils";
+    import {getUserList,mainGoodsTest} from "../../mock";
+    import Mock from 'mockjs'
 
     export default {
         name: "index",
@@ -55,7 +58,8 @@
                 },
                 isShow: false,
                 scrollTop: 0,
-                scrollTitleShow: true
+                scrollTitleShow: true,
+                flag:true
             }
         },
         created() {
@@ -64,6 +68,7 @@
             this.getMainGoods('pop');//获取商品列表--流行
             this.getMainGoods('news');//获取商品列表--最新
             this.getMainGoods('sell');//获取商品列表--精选
+            //this.getMock();//获取模拟数据
         },
         mounted() {
             this.imgLoad();
@@ -86,17 +91,54 @@
 
             //获取商品列表
             getMainGoods(type) {
+
+                // getMainGoods(type, page).then(res => {
+                //     console.log(res);
+                //     if (res.data.list.mes) {
+                //         //没有更多数据了
+                //         console.log(res.data.list.mes);
+                //     }
+                //     this.goods[type].list = this.goods[type].list.concat(res.data.list || []);
+                //     //console.log(this.goods['pop'].list);
+                //     this.goods[type].page++;
+                //     this.$refs.scroll.finishPull();//每拉一次调用一次完成事件
+                // })
+
                 let page = this.goods[type].page + 1;
-                getMainGoods(type, page).then(res => {
+                if(this.flag){
+                    Mock.mock(RegExp(`/mock` + ".*"), 'get', mainGoodsTest(type,page)) //模拟分页查询用户信息接口
+                    this.flag = false
+                    console.log('sas');
+                }
+                mainGoodsTest2().then(res =>{
                     if (res.data.list.mes) {
                         //没有更多数据了
                         console.log(res.data.list.mes);
                     }
                     this.goods[type].list = this.goods[type].list.concat(res.data.list || []);
-                    //console.log(this.goods['pop'].list);
                     this.goods[type].page++;
                     this.$refs.scroll.finishPull();//每拉一次调用一次完成事件
+                    console.log(res);
+                    console.log(type);
+                    Mock.mock(RegExp(`/mock` + ".*"), 'get', mainGoodsTest(type,page)) //模拟分页查询用户信息接口
                 })
+
+                new Promise((resolve, reject) => {
+
+                    resolve({type,page})
+                }).then((obj)=>{
+
+                })
+
+            },
+
+            //获取模拟数据mock
+            getMock(){
+                // Mock.mock(RegExp(`/mock` + ".*"), 'get', mainGoodsTest(this.goodsType,1)) //模拟分页查询用户信息接口
+                //
+                // mainGoodsTest2().then(res =>{
+                //     console.log(res);
+                // })
             },
 
             //切換导航标题
@@ -112,6 +154,8 @@
                         this.goodsType = "sell"
                         break;
                 }
+                this.$refs.tabControl1.currentIndex = index;
+                this.$refs.tabControl2.currentIndex = index;
             },
 
             //回到顶部
@@ -149,8 +193,8 @@
 
             //解决副标题栏吸顶问题
             swiperLoad() {
-                console.log(this.$refs.tabControl.$el.offsetTop);
-                this.scrollTop = this.$refs.tabControl.$el.offsetTop;
+                console.log(this.$refs.tabControl2.$el.offsetTop);
+                this.scrollTop = this.$refs.tabControl2.$el.offsetTop;
             }
 
         },

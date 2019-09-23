@@ -24,3 +24,28 @@ export function request(config) {
   //返回请求结果
   return Instance(config)
 }
+
+export function requestMock(config) {
+  //创建axios的实例
+  const Instance2= axios.create({
+    // baseURL:'https://www.easy-mock.com/mock/5d5f811e065c2c2355c8ee03',
+    timeOut:5000
+  })
+
+  //创建拦截器
+  Instance2.interceptors.request.use(config =>{
+    return config
+  },err =>{
+    console.log(err);
+  })
+
+  //获取响应体中的data部分
+  Instance2.interceptors.response.use(res =>{
+    return res.data
+  },err =>{
+    console.log(err);
+  })
+
+  //返回请求结果
+  return Instance2(config)
+}

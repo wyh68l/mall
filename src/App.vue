@@ -2,11 +2,11 @@
   <div id="app">
 
     <!--主页面-->
+    <!-- keep-alive要使用exclude排除里面的商品详情页面，否则不会刷新商品详情的id-->
+    <!--exclude排除的是组件的name值-->
       <keep-alive>
         <router-view></router-view>
       </keep-alive>
-
-
     <footerBar></footerBar>
   </div>
 </template>

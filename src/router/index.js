@@ -19,6 +19,9 @@ const Category = () => import ("views/category/index")
 const Mine = () => import ("views/mine/index")
 const ShopCar = () => import ("views/shopCar/index")
 
+//商品详情页
+const GoodsInfo = () => import ("components/content/good/goodsInfo")
+
 
 
 const routes = [
@@ -31,7 +34,7 @@ const routes = [
   {
     path:'/main',
     name:'Main',
-    component:Main
+    component:Main,
   },
   {
     path:'/category',
@@ -47,6 +50,11 @@ const routes = [
     path:'/shopCar',
     name:'ShopCar',
     component:ShopCar
+  },
+  {
+    path:'/main/goodsInfo:id',
+    name: 'GoodsInfo',
+    component:GoodsInfo
   }
 ]
 
