@@ -5,7 +5,8 @@
     </headerBar>
 
     <!--伪造标题栏吸顶的假象-->
-    <tabControl :titleList="titleList" v-show="!scrollTitleShow" @tabClick="changeTab" ref="tabControl1" class="tabControl"></tabControl>
+    <tabControl :titleList="titleList" v-show="!scrollTitleShow" @tabClick="changeTab" ref="tabControl1"
+                class="tabControl"></tabControl>
 
     <scroll class="scrollContent" ref="scroll"
             :probeType="3"
@@ -16,10 +17,12 @@
       <swiper :bannerList="bannerList" @swiperLoad="swiperLoad"></swiper>
       <reviews :reviewsList="reviewsList"></reviews>
       <div class="fake">
-        <a href=""><img src="~assets/images/main_fake2.png" alt=""></a>
+        <a href=""><img src="~assets/images/main_fake3.png" alt=""></a>
       </div>
       <tabControl :titleList="titleList" @tabClick="changeTab" ref="tabControl2"></tabControl>
+
       <goodList :goodsList="goods[goodsType].list" id="goodsList"></goodList>
+
     </scroll>
 
     <!--在给组件添加点击事件的时候，要使用@click.native才会有效果-->
@@ -37,19 +40,18 @@
     import scroll from "components/commons/scroll/scroll";
     import backTop from "components/commons/backTop";
 
-    import {getMainData, getMainGoods,mainGoodsTest2} from "serves/main";
+    import {mainGoods, mainBanner, mainReviews} from "serves/main";
     import {debounce} from "commons/utils";
-    import {getUserList,mainGoodsTest} from "../../mock";
-    import Mock from 'mockjs'
+
 
     export default {
         name: "index",
         data() {
             return {
-                bannerList: [],
-                reviewsList: [],
+                bannerList: {},
+                reviewsList: {},
                 scroll: null,
-                titleList: ['流行', '新款', '精选'],
+                titleList: ['推荐', '唯美', '可爱'],
                 goodsType: 'pop',
                 goods: {
                     'pop': {page: 0, list: []},
@@ -59,16 +61,14 @@
                 isShow: false,
                 scrollTop: 0,
                 scrollTitleShow: true,
-                flag:true
+                flag: true,
             }
         },
         created() {
             this.getBannerList();
             this.getreviewsList();
-            this.getMainGoods('pop');//获取商品列表--流行
-            this.getMainGoods('news');//获取商品列表--最新
-            this.getMainGoods('sell');//获取商品列表--精选
-            //this.getMock();//获取模拟数据
+            this.getMainGoods_pro();
+            // sessionStorage.clear()
         },
         mounted() {
             this.imgLoad();
@@ -77,68 +77,50 @@
         methods: {
             //获取轮播图
             getBannerList() {
-                getMainData().then(res => {
-                    this.bannerList = res.data.banner;
+                mainBanner().then(res => {
+                    this.bannerList = res.data.list;
                 })
             },
 
             //获取分类列表
             getreviewsList() {
-                getMainData().then(res => {
+                mainReviews().then(res => {
                     this.reviewsList = res.data.reviews;
                 })
             },
 
             //获取商品列表
-            getMainGoods(type) {
-
-                // getMainGoods(type, page).then(res => {
-                //     console.log(res);
-                //     if (res.data.list.mes) {
-                //         //没有更多数据了
-                //         console.log(res.data.list.mes);
-                //     }
-                //     this.goods[type].list = this.goods[type].list.concat(res.data.list || []);
-                //     //console.log(this.goods['pop'].list);
-                //     this.goods[type].page++;
-                //     this.$refs.scroll.finishPull();//每拉一次调用一次完成事件
-                // })
-
+            getMainGoods(type, resolve) {
                 let page = this.goods[type].page + 1;
-                if(this.flag){
-                    Mock.mock(RegExp(`/mock` + ".*"), 'get', mainGoodsTest(type,page)) //模拟分页查询用户信息接口
-                    this.flag = false
-                    console.log('sas');
-                }
-                mainGoodsTest2().then(res =>{
+                mainGoods(type, page, resolve).then(res => {
                     if (res.data.list.mes) {
                         //没有更多数据了
-                        console.log(res.data.list.mes);
+                        console.log(res.data.list);
+                        this.$refs.scroll.finishPull();//每拉一次调用一次完成事件
+                    }else{
+                        this.goods[type].list = this.goods[type].list.concat(res.data.list || []);
+                        this.goods[type].page++;
+                        this.$refs.scroll.finishPull();//每拉一次调用一次完成事件
+                        if (resolve !== undefined) resolve();
                     }
-                    this.goods[type].list = this.goods[type].list.concat(res.data.list || []);
-                    this.goods[type].page++;
-                    this.$refs.scroll.finishPull();//每拉一次调用一次完成事件
-                    console.log(res);
-                    console.log(type);
-                    Mock.mock(RegExp(`/mock` + ".*"), 'get', mainGoodsTest(type,page)) //模拟分页查询用户信息接口
                 })
-
-                new Promise((resolve, reject) => {
-
-                    resolve({type,page})
-                }).then((obj)=>{
-
-                })
-
             },
 
-            //获取模拟数据mock
-            getMock(){
-                // Mock.mock(RegExp(`/mock` + ".*"), 'get', mainGoodsTest(this.goodsType,1)) //模拟分页查询用户信息接口
-                //
-                // mainGoodsTest2().then(res =>{
-                //     console.log(res);
-                // })
+            //异步解决获取首页商品数据
+            getMainGoods_pro() {
+                //通过promise来解决异步问题----我特么就是天才
+                //通过将resolve对象暴露出去，再用函数回调实现多重异步处理
+                new Promise((resolve) => {
+                    this.getMainGoods('pop', resolve);//获取商品列表--流行
+                }).then(res => {
+                    return new Promise((resolve) => {
+                        this.getMainGoods('news', resolve);//获取商品列表--最新
+                    })
+                }).then(res => {
+                    return new Promise((resolve) => {
+                        this.getMainGoods('sell', resolve);//获取商品列表--精选
+                    })
+                })
             },
 
             //切換导航标题
@@ -193,7 +175,7 @@
 
             //解决副标题栏吸顶问题
             swiperLoad() {
-                console.log(this.$refs.tabControl2.$el.offsetTop);
+                //console.log(this.$refs.tabControl2.$el.offsetTop);
                 this.scrollTop = this.$refs.tabControl2.$el.offsetTop;
             }
 
@@ -214,6 +196,7 @@
   @import "~assets/style/base.less";
 
   .page {
+    background-color: #F4F4F4;
 
     //分类列表
     .fake {
@@ -222,6 +205,7 @@
       a {
         img {
           border-bottom: 3vw solid #F4F4F4;
+          padding: 0 1vw;
         }
       }
     }

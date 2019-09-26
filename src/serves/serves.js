@@ -28,7 +28,7 @@ export function request(config) {
 export function requestMock(config) {
   //创建axios的实例
   const Instance2= axios.create({
-    // baseURL:'https://www.easy-mock.com/mock/5d5f811e065c2c2355c8ee03',
+    baseURL:'/mock',
     timeOut:5000
   })
 

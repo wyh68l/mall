@@ -52,7 +52,7 @@ const routes = [
     component:ShopCar
   },
   {
-    path:'/main/goodsInfo:id',
+    path:'/main/goodsInfo/id=:id',
     name: 'GoodsInfo',
     component:GoodsInfo
   }

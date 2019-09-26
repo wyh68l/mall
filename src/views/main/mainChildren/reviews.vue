@@ -1,9 +1,9 @@
 <template>
   <div class="reviews">
     <ul>
-      <li v-for="(item,index) in reviewsList[0]?reviewsList[0].img:[]" :key="index">
+      <li v-for="(item,index) in reviewsList?reviewsList.img:[]" :key="index">
         <img :src="item" alt="">
-        <div>{{reviewsList[0].mes[index]}}</div>
+        <div>{{reviewsList.type[index]}}</div>
       </li>
     </ul>
   </div>
@@ -14,7 +14,7 @@
         name: "reviews",
         props: {
             reviewsList: {
-                type: Array,
+                type: Object,
                 default() {
                     return [];
                 }
@@ -33,7 +33,8 @@
       display: flex;
       width: 100%;
       justify-content: space-around;
-      .value_pb(50vw);
+      .value_pb(25vw);
+      background-color: #fff;
       border-bottom: 3vw solid #F4F4F4;
 
       li {
@@ -48,7 +49,7 @@
           .value_mb(10vw);
         }
         div{
-          .value_fs(14vw);
+          .value_fs(24vw);
           color: @font-color;
         }
       }

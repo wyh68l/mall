@@ -34,6 +34,7 @@
         .value_el(height,80vw);
         .value_lh(80vw);
         color: #fff;
+        .value_fs(32vw);
       }
     }
     .center{

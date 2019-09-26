@@ -1,29 +1,28 @@
 <template>
-  <swiper :options="swiperOption" class="swiper-wrap mainSwiper" v-if="bannerList.length!=0">
-    <swiper-slide v-for="(item,index) in bannerList" :key="index+'img'">
-      <img :src="item.imgNav" class="title-img" @load="swiperLoad"/>
+  <swiper :options="swiperOption" class="swiper-wrap mainSwiper" v-if="bannerList.length!==0">
+    <swiper-slide v-for="(item,index) in bannerList.img" :key="index+'img'">
+      <img :src="item" class="title-img" @load="swiperLoad"/>
     </swiper-slide>
     <!-- 常见的小圆点 -->
-    <div class="swiper-pagination" v-for="(item,index) in bannerList" :key="index" slot="pagination"></div>
+    <div class="swiper-pagination" v-for="index in bannerList.img" :key="index" slot="pagination"></div>
   </swiper>
 </template>
 
 <script>
+    import "swiper/dist/css/swiper.css"; //引入swiper.css
     import {swiper, swiperSlide} from "vue-awesome-swiper";
-    require("swiper/dist/css/swiper.css"); //引入swiper.css
 
     export default {
         name: "mainSwiper",
         data() {
             return {
                 swiperOption: {
-                    loop: true,
                     autoplay: {
                         delay: 2500,
-                        stopOnLastSlide: false,
                         /* 触摸滑动后是否继续轮播 */
                         disableOnInteraction: false
                     },
+                    // loop: true,
                     //分页器设置
                     pagination: {
                         el: ".swiper-pagination",
@@ -35,7 +34,7 @@
         },
         props: {
             bannerList: {
-                type: Array,
+                type:Object,
                 default() {
                     return []
                 }
@@ -57,10 +56,10 @@
   @import "~assets/style/base.less";
 
   .mainSwiper {
-    .value_el(height, 200vw);
+    .value_el(height, 350vw);
 
     .title-img {
-      .value_el(height, 200vw);
+      .value_el(height, 350vw);
     }
 
     /*设置小圆点样式*/
