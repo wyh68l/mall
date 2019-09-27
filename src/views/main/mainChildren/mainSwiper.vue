@@ -1,5 +1,5 @@
 <template>
-  <swiper :options="swiperOption" class="swiper-wrap mainSwiper" v-if="bannerList.length!==0">
+  <swiper :options="swiperOption" class="swiper-wrap Swiper" v-if="bannerList.img.length !== 0">
     <swiper-slide v-for="(item,index) in bannerList.img" :key="index+'img'">
       <img :src="item" class="title-img" @load="swiperLoad"/>
     </swiper-slide>
@@ -27,16 +27,17 @@
                     pagination: {
                         el: ".swiper-pagination",
                         clickable: true,
-                        type: "bullets",
+                        // type: "bullets",
                     }
-                }
+                },
+                bannerImgList: []
             }
         },
         props: {
             bannerList: {
                 type:Object,
                 default() {
-                    return []
+                    return {}
                 }
             }
         },
@@ -55,7 +56,7 @@
 <style lang="less">
   @import "~assets/style/base.less";
 
-  .mainSwiper {
+  .Swiper {
     .value_el(height, 350vw);
 
     .title-img {
@@ -63,7 +64,6 @@
     }
 
     /*设置小圆点样式*/
-
     .swiper-pagination-bullet {
       background: rgba(0, 0, 0, 0.5) !important;
     }

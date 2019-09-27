@@ -48,7 +48,7 @@
         name: "index",
         data() {
             return {
-                bannerList: {},
+                bannerList: {img:[]},
                 reviewsList: {},
                 scroll: null,
                 titleList: ['推荐', '唯美', '可爱'],
@@ -78,7 +78,9 @@
             //获取轮播图
             getBannerList() {
                 mainBanner().then(res => {
-                    this.bannerList = res.data.list;
+                    if(res.data.list.img.length !== 0){
+                        this.bannerList = res.data.list;
+                    }
                 })
             },
 
@@ -95,11 +97,12 @@
                 mainGoods(type, page, resolve).then(res => {
                     if (res.data.list.mes) {
                         //没有更多数据了
-                        console.log(res.data.list);
+                        console.log(res.data.list.mes);
                         this.$refs.scroll.finishPull();//每拉一次调用一次完成事件
                     }else{
                         this.goods[type].list = this.goods[type].list.concat(res.data.list || []);
                         this.goods[type].page++;
+                        // console.log(res.data.list);
                         this.$refs.scroll.finishPull();//每拉一次调用一次完成事件
                         if (resolve !== undefined) resolve();
                     }
@@ -219,7 +222,7 @@
 
     //滚动区域
     .scrollContent {
-      .value_el(height, 1150vw);
+      .value_el(height, 1230vw);
       overflow: hidden;
     }
   }

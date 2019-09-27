@@ -65,7 +65,7 @@
     box-shadow:0 -1px 1px rgba(0,0,0,0.08);
     bottom: 0;
     left: 0;
-    z-index: 10;
+    /*z-index: 10;*/
 
     .footList{
       display: flex;

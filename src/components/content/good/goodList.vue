@@ -1,7 +1,7 @@
 <template>
     <div class="goodList">
       <ul v-for="(item1,index1) in goodsList?goodsList:[]" :key="index1">
-        <li v-for="(item,index) in item1?item1.img:[]" :key="index" @click="goTo(index)">
+        <li v-for="(item,index) in item1?item1.img:[]" :key="index" @click="goTo(item1.id[index],item1.goodsInfo[index])">
           <a><img :src="item" alt="" @load="imgLoad"><p>{{item1.goodsInfo[index]}}</p></a>
         </li>
       </ul>
@@ -28,8 +28,8 @@
             imgLoad(){
                 this.$bus.$emit('loadImg');
             },
-            goTo(index){
-                this.$router.push({name:'GoodsInfo',params:{id:index}})
+            goTo(id,title){
+                this.$router.push({name:'GoodsInfo',params:{id:id,title:title}})
             }
         }
     }

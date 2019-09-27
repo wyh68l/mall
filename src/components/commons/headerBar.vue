@@ -15,7 +15,7 @@
 <style scoped lang="less">
   @import "~assets/style/base.less";
   .headerBar{
-    position: relative;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -24,7 +24,7 @@
     .value_el(height,80vw);
     justify-content: space-around;
     box-shadow:0 1px 1px rgba(100,100,100,0.1);
-    background-color: @bg-blue;
+    background-color: rgba(0,0,0,0.4);
 
     .left,.right,.center{
       flex: 2;
@@ -39,6 +39,8 @@
     }
     .center{
       flex: 6;
+      display: flex;
+      justify-content: space-around;
     }
   }
 
