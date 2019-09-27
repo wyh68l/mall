@@ -42,8 +42,8 @@ export function mainGoodsMock(type,page) {
           if (parseInt(page) === 1) {
             return Mock.mock({
               "type|12":["pop"],
-              // "img": randomImgSrc().imgSrcMob,
-               "img|12": ["https://dummyimage.com/200x300.png/00A1D6/ffffff&text=商品"],
+              "img": randomImgSrc().imgSrcMob,
+              //  "img|12": ["https://dummyimage.com/200x300.png/00A1D6/ffffff&text=商品"],
               "id":"@range(12)",
               "goodsInfo|3": [
                 // "狼爪T恤男短袖夏宽松圆领快干吸湿透气休闲",
