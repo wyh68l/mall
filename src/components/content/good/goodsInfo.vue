@@ -25,6 +25,9 @@
         <li>发布时间：<span>{{getMesList().date}}</span></li>
       </ul>
     </div>
+
+      <!--评论区-->
+      <reviews :reviewsList="goodInfoList.reviewsList" :arrIndex="arrIndex?arrIndex:0"></reviews>
     </scroll>
 
   </div>
@@ -34,6 +37,7 @@
     import headerBar from "components/commons/headerBar";
     import {mainGoodsInfo} from "serves/main";
     import scroll from "components/commons/scroll/scroll";
+    import reviews from "../reviews/reviews";
 
     import "swiper/dist/css/swiper.css"; //引入swiper.css
     import {swiper, swiperSlide} from "vue-awesome-swiper";
@@ -59,10 +63,11 @@
                 goodInfoList:{
                     idArr:[],
                     bannerList:[],
-                    mesList:[]
+                    mesList:[],
+                    reviewsList:[]
                 },
                 id: 0,
-                arrIndex:null
+                arrIndex:null,
             }
         },
         created() {
@@ -116,7 +121,7 @@
 
                     console.log(this.arrIndex);
                     console.log(getItem.idArr.includes(this.id));
-                    console.log(this.goodInfoList);
+                    // console.log(this.goodInfoList);
                 } else {
                     //如果每次进入新的页面
                     mainGoodsInfo(this.id).then(res => {
@@ -128,6 +133,7 @@
                         this.goodInfoList.idArr.push(this.id);
                         this.goodInfoList.bannerList.push(res.data.list.goodsInfo.banner.img);
                         this.goodInfoList.mesList.push(res.data.list.goodsInfo.mes);
+                        this.goodInfoList.reviewsList.push(res.data.list.goodsInfo.review);
 
                         //存储到本地数据
                         sessionStorage.setItem("goodInfoList", JSON.stringify(this.goodInfoList));
@@ -135,8 +141,8 @@
                         //将新添加的下标赋值給arrIndex
                         this.arrIndex = this.goodInfoList.bannerList.length - 1;
 
-                        console.log(getItem);
-                        console.log(this.goodInfoList.mesList);
+                        // console.log(getItem);
+                         console.log(this.goodInfoList);
                         console.log(this.arrIndex);
                     })
                 }
@@ -151,7 +157,8 @@
             headerBar,
             swiper,
             swiperSlide,
-            scroll
+            scroll,
+            reviews
         }
     }
 </script>

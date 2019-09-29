@@ -193,7 +193,12 @@ export function goodsInfoMock(id){
               "hot":"@natural(10, 10000)",
               "down":"@natural(0, 5000)",
               "author":"@cname",
-              "date":"@date"
+              "date":"@date",
+            },
+            "review":{
+              "user":"@cname",
+              "date":"@date",
+              "content|1":["好好看呀~","别说了，都是我老婆","在座的的各位，拔刀吧！！","狂三我老婆！！"]
             }
           }
         })

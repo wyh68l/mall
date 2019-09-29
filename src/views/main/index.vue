@@ -15,7 +15,7 @@
             @pullMore="pullMore"
     >
       <swiper :bannerList="bannerList" @swiperLoad="swiperLoad"></swiper>
-      <reviews :reviewsList="reviewsList"></reviews>
+      <category :reviewsList="reviewsList"></category>
       <div class="fake">
         <a href=""><img src="~assets/images/main_fake3.png" alt=""></a>
       </div>
@@ -34,7 +34,7 @@
 <script>
     import headerBar from "components/commons/headerBar";
     import swiper from './mainChildren/mainSwiper'
-    import reviews from "./mainChildren/reviews";
+    import category from "./mainChildren/category";
     import tabControl from "components/content/TabControl/TabControl";
     import goodList from "components/content/good/goodList";
     import scroll from "components/commons/scroll/scroll";
@@ -187,7 +187,7 @@
             goodList,
             headerBar,
             swiper,
-            reviews,
+            category,
             tabControl,
             scroll,
             backTop
