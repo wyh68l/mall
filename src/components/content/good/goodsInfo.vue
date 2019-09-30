@@ -3,10 +3,12 @@
     <!--  导航栏-->
     <headerBar class="header">
       <div slot="left" @click="$router.go(-1)" class="back"><i class="iconfont iconfanhui1"></i></div>
-      <div slot="center" class="active">壁纸</div><div slot="center">详情</div><div slot="center">更多</div>
+      <div slot="center" ref="title1" class="active" @click="move(1)">壁纸</div>
+      <div slot="center" ref="title2" @click="move(2)">详情</div>
+      <div slot="center" ref="title3" @click="move(3)">评论</div>
     </headerBar>
 
-    <scroll class="scrollContent" ref="scroll">
+    <scroll class="scrollContent" ref="scroll" @showStatus="showStatus" :probeType="3">
     <div class="img_list">
       <ul v-if="goodInfoList.bannerList.length!==0">
         <li v-for="(item,index) in goodInfoList.bannerList[arrIndex]" :key="index+'img'">
@@ -27,8 +29,11 @@
     </div>
 
       <!--评论区-->
-      <reviews :reviewsList="goodInfoList.reviewsList" :arrIndex="arrIndex?arrIndex:0"></reviews>
+      <reviews :reviewsList="goodInfoList.reviewsList[arrIndex]" @newReviews="saveReviews" ></reviews>
     </scroll>
+
+    <!--在给组件添加点击事件的时候，要使用@click.native才会有效果-->
+    <backTop @click.native="backTop" v-show="isShow"></backTop>
 
   </div>
 </template>
@@ -38,6 +43,9 @@
     import {mainGoodsInfo} from "serves/main";
     import scroll from "components/commons/scroll/scroll";
     import reviews from "../reviews/reviews";
+    import backTop from "components/commons/backTop";
+    import {back} from "../../../commons/mixin";
+    import $ from 'jquery'
 
     import "swiper/dist/css/swiper.css"; //引入swiper.css
     import {swiper, swiperSlide} from "vue-awesome-swiper";
@@ -68,8 +76,11 @@
                 },
                 id: 0,
                 arrIndex:null,
+                isShow:false,
+                positionY:0
             }
         },
+        mixins:[back],
         created() {
             this.getGoodsInfoList();
         },
@@ -94,6 +105,7 @@
                 this.initGoodInfoList();//初始化商品详情数组
                 this.initSessionPage();//设置不同的页面缓存
             },
+
             //获取商品详情
             getMesList() {
                 // console.log(this.goodInfoList.mesList);
@@ -103,12 +115,14 @@
                     return this.goodInfoList.mesList[this.arrIndex]
                 }
             },
+
             //第一次进入页面存储初始化商品详情
             initGoodInfoList() {
                 if (!JSON.parse(sessionStorage.getItem("goodInfoList"))) {
                     sessionStorage.setItem("goodInfoList", JSON.stringify(this.goodInfoList));
                 }
             },
+
             //设置每次进入详情页的内容
             initSessionPage() {
                 let getItem = JSON.parse(sessionStorage.getItem("goodInfoList"));
@@ -121,7 +135,6 @@
 
                     console.log(this.arrIndex);
                     console.log(getItem.idArr.includes(this.id));
-                    // console.log(this.goodInfoList);
                 } else {
                     //如果每次进入新的页面
                     mainGoodsInfo(this.id).then(res => {
@@ -143,22 +156,56 @@
 
                         // console.log(getItem);
                          console.log(this.goodInfoList);
-                        console.log(this.arrIndex);
+                         console.log(this.arrIndex);
                     })
                 }
             },
 
+            //存储新添加的评论数据
+            saveReviews(res){
+                this.goodInfoList.reviewsList[this.arrIndex] = res;
+                //存储到本地数据
+                sessionStorage.setItem("goodInfoList", JSON.stringify(this.goodInfoList));
+            },
 
-            swiperLoad() {
+            //判断返回按钮是否显示
+            showStatus(position) {
+                if ((position.y ? position.y : 0) <= -200) {
+                    this.isShow = true
+                } else {
+                    this.isShow = false
+                }
 
+                //判断滚动距离改变标题的样式
+                if((position.y) <= -1472 && (position.y) >= -1614){
+                    $(this.$refs.title2).addClass('active').siblings().removeClass('active');
+                }else if((position.y ? position.y : 0) <= -1614){
+                    $(this.$refs.title3).addClass('active').siblings().removeClass('active');
+                }else{
+                    $(this.$refs.title1).addClass('active').siblings().removeClass('active');
+                }
+            },
+
+            //点击标题滚动到适当位置
+            move(type){
+                if(type === 1){
+                    //通过#refs.属性名.可以获取到组件的属性和方法
+                    this.$refs.scroll.backTop(0, 0, 800);
+                }else if(type === 2){
+                    this.$refs.scroll.backTop(0, -1614, 800);
+                }else{
+                    this.$refs.scroll.backTop(0, -1830, 800);
+                }
             }
+
         },
         components: {
             headerBar,
             swiper,
             swiperSlide,
             scroll,
-            reviews
+            reviews,
+            backTop
         }
     }
 </script>
@@ -254,7 +301,7 @@
 
     //滚动区域
     .scrollContent {
-      height: 177vw;
+      height: 100vh;
       overflow: hidden;
     }
   }

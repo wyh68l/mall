@@ -38,6 +38,7 @@
 <style scoped lang="less">
     @import "~assets/style/base.less";
 .goodList{
+  padding-bottom: 3vw;
   ul{
     display: flex;
     justify-content: space-around;

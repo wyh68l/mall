@@ -20,6 +20,7 @@ this.$bus.$on('myChange', () => {
 });
 * */
 
+
 new Vue({
   render: h => h(App),
 }).$mount('#app')

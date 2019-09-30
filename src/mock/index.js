@@ -193,13 +193,25 @@ export function goodsInfoMock(id){
               "hot":"@natural(10, 10000)",
               "down":"@natural(0, 5000)",
               "author":"@cname",
-              "date":"@date",
+              "date":"@datetime(\"yyyy-MM-dd HH:mm\")",
             },
-            "review":{
-              "user":"@cname",
-              "date":"@date",
-              "content|1":["好好看呀~","别说了，都是我老婆","在座的的各位，拔刀吧！！","狂三我老婆！！"]
-            }
+            "review":[
+              {
+                "user":"@cname",
+                "date":"@datetime(\"yyyy-MM-dd HH:mm\")",
+                "content|1":["好好看呀~","别说了，都是我老婆","在座的的各位，拔刀吧！！","康娜我老婆！！"]
+              },
+              {
+                "user":"@cname",
+                "date":"@datetime(\"yyyy-MM-dd HH:mm\")",
+                "content|1":["22333333~","不错，有点意思","啦啦啦啦！","我要绿了你们！！"]
+              },
+              {
+                "user":"@cname",
+                "date":"@datetime(\"yyyy-MM-dd HH:mm\")",
+                "content|1":["楼上的，你们老婆在我手上","楼下的，我是你爸爸","神仙打架","作者真帅！！"]
+              }
+            ]
           }
         })
       }

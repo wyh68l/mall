@@ -39,6 +39,7 @@
     import goodList from "components/content/good/goodList";
     import scroll from "components/commons/scroll/scroll";
     import backTop from "components/commons/backTop";
+    import {back} from 'commons/mixin'
 
     import {mainGoods, mainBanner, mainReviews} from "serves/main";
     import {debounce} from "commons/utils";
@@ -64,6 +65,7 @@
                 flag: true,
             }
         },
+        mixins:[back],//混入复用的返回顶部代码
         created() {
             this.getBannerList();
             this.getreviewsList();
@@ -143,11 +145,6 @@
                 this.$refs.tabControl2.currentIndex = index;
             },
 
-            //回到顶部
-            backTop() {
-                this.$refs.scroll.backTop(0, 0, 800);//通过#refs.属性名.可以获取到组件的属性和方法
-            },
-
             //判断返回按钮是否显示
             showStatus(position) {
                 if ((position.y ? position.y : 0) <= -200) {
@@ -222,7 +219,7 @@
 
     //滚动区域
     .scrollContent {
-      .value_el(height, 1230vw);
+      height: 94vh;
       overflow: hidden;
     }
   }

@@ -1,28 +1,31 @@
 <template>
   <div class="reviews">
-    <label for="goodsReviews" class="send">
-      <input type="text" v-model="review" name="goodsReviews" id="goodsReviews">
-      <input type="button" value="发表评论">
+    <label class="send">
+      <input type="text" v-model="review"  @keyup.enter="sendReview" placeholder="请文明评论呦~">
+      <input type="button" value="发表评论" @click="sendReview">
     </label>
     <div class="list">
-      <ul>
-        <li v-for="(item,index) in reviewsList[arrIndex]" :key="index">
-          <h3><span>{{item}}</span></h3>
-          <p><span>{{}}</span></p>
-          <span class="date">{{index}}</span>
+      <ul ref="list">
+        <li v-for="(item,index) in reviewsList" :key="index">
+          <h3><span>{{item.user}}</span></h3>
+          <p><span>{{item.content}}</span></p>
+          <span class="date">{{item.date}}</span>
         </li>
       </ul>
-      <span>{{reviewsList[arrIndex]}}</span>
     </div>
   </div>
 </template>
 
 <script>
+    import format from "commons/utils";
+
     export default {
         name: "reviews",
         data(){
             return {
                 review:'',
+                isShow:false,
+                userName:'匿名用户'
             }
         },
         props:{
@@ -32,19 +35,27 @@
                     return []
                 }
             },
-            arrIndex:{
-                default() {
-                    return null;
-                }
-            }
-        },
-        created(){
-            this.getReviewsList();
         },
         methods:{
-            getReviewsList() {
-                //console.log(this.reviewsList);
-                //console.log(this.arrIndex);
+            /*发送评论*/
+            sendReview(){
+                let mes = this.review.trim();
+                if(mes !== null && mes.length !== 0){
+                    let reviewItem = {
+                        user:this.userName,
+                        content:mes,
+                        date:new Date().format("yyyy-MM-dd HH:mm")
+                    }
+                    this.reviewsList.push(reviewItem);
+                    this.saveReviews();
+                    this.review = '';
+                }else{
+                    console.log('请输入评论内容');
+                }
+            },
+            //保存评论
+            saveReviews(){
+                this.$emit('newReviews',this.reviewsList);
             }
         }
     }
