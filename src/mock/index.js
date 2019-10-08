@@ -44,7 +44,7 @@ export function mainGoodsMock(type,page) {
               "type|12":["pop"],
               "img": randomImgSrc().imgSrcMob,
               //  "img|12": ["https://dummyimage.com/200x300.png/00A1D6/ffffff&text=商品"],
-              "id":"@range(12)",
+              "id|12":["@guid"],
               "goodsInfo|3": [
                 // "狼爪T恤男短袖夏宽松圆领快干吸湿透气休闲",
                 // "骆驼户外冲锋衣男加绒加厚三合一防寒登山服",
@@ -61,7 +61,7 @@ export function mainGoodsMock(type,page) {
               "type|12":["pop"],
               "img": randomImgSrc().imgSrcMob,
               // "img|20": ["https://dummyimage.com/200x300.png/FB7299/ffffff&text=商品"],
-              "id":"@range(13,25)",
+              "id|12":["@guid"],
               "goodsInfo|3": [
                 // "旅行包时尚潮流手提包运动健身包男士",
                 // "Nike 耐克官方NIKE AIR MAX 270 REACT男子运动鞋",
@@ -84,7 +84,7 @@ export function mainGoodsMock(type,page) {
               "type|12":["news"],
               "img": randomImgSrc().imgSrcMob,
               // "img|20": ["https://dummyimage.com/200x300.png/FB7299/ffffff&text=商品"],
-              "id":"@range(12)",
+              "id|12":["@guid"],
               "goodsInfo|3": [
                 "精美二次元动漫插画桌面壁纸",
                 "精美动漫萝莉美女图片桌面壁纸",
@@ -97,7 +97,7 @@ export function mainGoodsMock(type,page) {
               "type|12":["news"],
               "img": randomImgSrc().imgSrcMob,
               // "img|20": ["https://dummyimage.com/200x300.png/00A1D6/ffffff&text=商品"],
-              "id":"@range(13,25)",
+              "id|12":["@guid"],
               "goodsInfo|3": [
                 // "狼爪T恤男短袖夏宽松圆领快干吸湿透气休闲",
                 // "骆驼户外冲锋衣男加绒加厚三合一防寒登山服",
@@ -120,7 +120,7 @@ export function mainGoodsMock(type,page) {
               "type|12":["sell"],
                "img": randomImgSrc().imgSrcMob,
               //"img|20": ["https://dummyimage.com/200x300.png/F98148/ffffff&text=商品"],
-              "id":"@range(12)",
+              "id|12":["@guid"],
               "goodsInfo|3": [
                 // "李宁跑步鞋女2019新款减震耐磨防滑情侣鞋",
                 // "李宁休闲鞋男鞋行云网面一脚蹬袜子鞋",
@@ -137,7 +137,7 @@ export function mainGoodsMock(type,page) {
               "type|12":["sell"],
               "img": randomImgSrc().imgSrcMob,
               //"img|20": ["https://dummyimage.com/200x300.png/FB7299/ffffff&text=商品"],
-              "id":"@range(13,25)",
+              "id|12":["@guid"],
               "goodsInfo|3": [
                 // "旅行包时尚潮流手提包运动健身包男士",
                 // "Nike 耐克官方NIKE AIR MAX 270 REACT男子运动鞋",
@@ -192,6 +192,7 @@ export function goodsInfoMock(id){
             "mes":{
               "hot":"@natural(10, 10000)",
               "down":"@natural(0, 5000)",
+              "price":"@natural(1, 20)",
               "author":"@cname",
               "date":"@datetime(\"yyyy-MM-dd HH:mm\")",
             },

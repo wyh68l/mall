@@ -13,7 +13,6 @@
 
 <script>
     import footerBar from "components/commons/footerBar";
-    import router from "./router";
     import $ from 'jquery'
 
     export default {
@@ -60,7 +59,6 @@
                 });
             }
         },
-        router
     }
 </script>
 

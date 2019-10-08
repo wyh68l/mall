@@ -9,31 +9,36 @@
     </headerBar>
 
     <scroll class="scrollContent" ref="scroll" @showStatus="showStatus" :probeType="3">
-    <div class="img_list">
-      <ul v-if="goodInfoList.bannerList.length!==0">
-        <li v-for="(item,index) in goodInfoList.bannerList[arrIndex]" :key="index+'img'">
-          <img :src="item" class="img_item"/>
-        </li>
-      </ul>
-    </div>
 
-    <!--详情信息-->
-    <div class="title" v-if="goodInfoList.bannerList.length!==0">
-      <h3>{{$route.params.title}}</h3>
-      <p>作者：<span>{{getMesList().author}}</span></p>
-      <ul>
-        <li>热度：<span>{{getMesList().hot}}</span></li>
-        <li>下载数：<span>{{getMesList().down}}</span></li>
-        <li>发布时间：<span>{{getMesList().date}}</span></li>
-      </ul>
-    </div>
+      <div class="img_list">
+        <ul v-if="goodInfoList.bannerList.length!==0">
+          <li v-for="(item,index) in goodInfoList.bannerList[arrIndex]" :key="index+'img'">
+            <img :src="item" class="img_item"/>
+          </li>
+        </ul>
+      </div>
+
+      <!--详情信息-->
+      <div class="title" v-if="goodInfoList.bannerList.length!==0">
+        <h3>{{$route.params.title}}</h3>
+        <p>作者：<span>{{getMesList().author}}</span></p>
+        <ul>
+          <li>热度：<span>{{getMesList().hot}}</span></li>
+          <li>下载数：<span>{{getMesList().down}}</span></li>
+          <li>发布时间：<span>{{getMesList().date}}</span></li>
+        </ul>
+      </div>
 
       <!--评论区-->
-      <reviews :reviewsList="goodInfoList.reviewsList[arrIndex]" @newReviews="saveReviews" ></reviews>
+      <reviews :reviewsList="goodInfoList.reviewsList[arrIndex]" @newReviews="saveReviews"></reviews>
+
     </scroll>
 
     <!--在给组件添加点击事件的时候，要使用@click.native才会有效果-->
     <backTop @click.native="backTop" v-show="isShow"></backTop>
+
+    <!--添加到购物车-->
+    <bottomShopCar @addCar="addCarTo"></bottomShopCar>
 
   </div>
 </template>
@@ -44,6 +49,7 @@
     import scroll from "components/commons/scroll/scroll";
     import reviews from "../reviews/reviews";
     import backTop from "components/commons/backTop";
+    import bottomShopCar from "./bottomShopCar";
     import {back} from "../../../commons/mixin";
     import $ from 'jquery'
 
@@ -68,19 +74,19 @@
                         type: "bullets",
                     }
                 },
-                goodInfoList:{
-                    idArr:[],
-                    bannerList:[],
-                    mesList:[],
-                    reviewsList:[]
+                goodInfoList: {
+                    idArr: [],
+                    bannerList: [],
+                    mesList: [],
+                    reviewsList: []
                 },
                 id: 0,
-                arrIndex:null,
-                isShow:false,
-                positionY:0
+                arrIndex: null,
+                isShow: false,
+                positionY: 0
             }
         },
-        mixins:[back],
+        mixins: [back],
         created() {
             this.getGoodsInfoList();
         },
@@ -100,7 +106,7 @@
         * */
         methods: {
             getGoodsInfoList() {
-                this.id = parseInt(this.$route.params.id);
+                this.id = this.$route.params.id;
 
                 this.initGoodInfoList();//初始化商品详情数组
                 this.initSessionPage();//设置不同的页面缓存
@@ -109,9 +115,9 @@
             //获取商品详情
             getMesList() {
                 // console.log(this.goodInfoList.mesList);
-                if(this.goodInfoList.mesList[this.arrIndex] === undefined){
+                if (this.goodInfoList.mesList[this.arrIndex] === undefined) {
                     console.log("信息获取失败");
-                }else{
+                } else {
                     return this.goodInfoList.mesList[this.arrIndex]
                 }
             },
@@ -155,14 +161,14 @@
                         this.arrIndex = this.goodInfoList.bannerList.length - 1;
 
                         // console.log(getItem);
-                         console.log(this.goodInfoList);
-                         console.log(this.arrIndex);
+                        console.log(this.goodInfoList);
+                        console.log(this.arrIndex);
                     })
                 }
             },
 
             //存储新添加的评论数据
-            saveReviews(res){
+            saveReviews(res) {
                 this.goodInfoList.reviewsList[this.arrIndex] = res;
                 //存储到本地数据
                 sessionStorage.setItem("goodInfoList", JSON.stringify(this.goodInfoList));
@@ -177,25 +183,58 @@
                 }
 
                 //判断滚动距离改变标题的样式
-                if((position.y) <= -1472 && (position.y) >= -1614){
+                if ((position.y) <= -1472 && (position.y) >= -1614) {
                     $(this.$refs.title2).addClass('active').siblings().removeClass('active');
-                }else if((position.y ? position.y : 0) <= -1614){
+                } else if ((position.y ? position.y : 0) <= -1614) {
                     $(this.$refs.title3).addClass('active').siblings().removeClass('active');
-                }else{
+                } else {
                     $(this.$refs.title1).addClass('active').siblings().removeClass('active');
                 }
             },
 
             //点击标题滚动到适当位置
-            move(type){
-                if(type === 1){
+            move(type) {
+                if (type === 1) {
                     //通过#refs.属性名.可以获取到组件的属性和方法
                     this.$refs.scroll.backTop(0, 0, 800);
-                }else if(type === 2){
+                } else if (type === 2) {
                     this.$refs.scroll.backTop(0, -1614, 800);
-                }else{
+                } else {
                     this.$refs.scroll.backTop(0, -1830, 800);
                 }
+            },
+
+            //添加到购物车
+            addCarTo() {
+                let flag = true;
+                //判断是否曾经添加过相同的商品
+                if (this.$store.state.carList.length !== 0) {
+                    this.$store.state.carList.find((item, index) => {
+                        if (this.id === item.id) {
+                            //若是相同的商品，则将数量加一
+                            this.$store.commit('addCarSum', index);
+                            flag = false
+                        }
+                    });
+                    if (flag) {
+                        this.addProducts();
+                    }
+                } else {
+                    this.addProducts();
+                }
+            },
+            addProducts() {
+                //创建一个对象来保存数据
+                const products = {};
+                products.img = this.goodInfoList.bannerList[this.arrIndex][0];
+                products.price = this.getMesList().price;
+                products.author = this.getMesList().author;
+                products.mes = this.$route.params.title;
+                products.id = this.id;
+                products.sum = 1;
+
+                //将对象保存到vuex中展示购物车的信息
+                this.$store.commit('addCar', products);
             }
 
         },
@@ -205,7 +244,8 @@
             swiperSlide,
             scroll,
             reviews,
-            backTop
+            backTop,
+            bottomShopCar
         }
     }
 </script>
@@ -213,7 +253,7 @@
 <style scoped lang="less">
   @import "~assets/style/base.less";
 
-  .page{
+  .page {
     position: relative;
     z-index: 5;
     background-color: #fff;
@@ -224,12 +264,14 @@
         .value_fs(40vw);
       }
     }
-    .headerBar{
+
+    .headerBar {
       position: absolute;
-      background-color: rgba(0,0,0,0.4);
+      background-color: rgba(0, 0, 0, 0.4);
     }
-    .active{
-      color: #f4a7b9!important;
+
+    .active {
+      color: #f4a7b9 !important;
     }
 
     //轮播图
@@ -242,7 +284,7 @@
     }
 
     //壁纸列表
-    .img_list{
+    .img_list {
       .img_item {
         .value_el(height, 1000vw);
       }
@@ -270,6 +312,7 @@
         li {
           .value_fs(24vw);
           color: #666666;
+
           span {
             .value_fs(26vw);
           }
@@ -279,11 +322,13 @@
               color: #FE5455;
             }
           }
+
           &:nth-of-type(2) {
             span {
               color: #00A1D6;
             }
           }
+
           &:nth-of-type(3) {
             span {
               color: #54D7C9;
@@ -291,7 +336,8 @@
           }
         }
       }
-      p{
+
+      p {
         float: right;
         .value_fs(24vw);
         color: #666666;
@@ -301,11 +347,10 @@
 
     //滚动区域
     .scrollContent {
-      height: 100vh;
+      height: calc(100vh - 9.9vw);
       overflow: hidden;
     }
   }
-
 
 
 </style>
