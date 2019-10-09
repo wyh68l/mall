@@ -9,11 +9,24 @@ export default {
     state.carList[payload].sum++;
   },
 
-  //获取购物车总价格
-  getPriceSum(state) {
-    state.priceSum = 0;
-    state.carList.forEach((item) => {
-      state.priceSum += item.price * item.sum;
-    })
+  //改变购物车单选框选中状态
+  setCheckState(state,payload) {
+    return state.carList[payload].isCheck = !state.carList[payload].isCheck;
+  },
+
+  //改变全选购物车选中状态---根据全选框来改变单选框
+  setCheckAllState(state,payload) {
+    if(state.isAllChecked){
+      if(state.carList.length-1 === payload){
+        state.isAllChecked = false
+      }
+      return state.carList[payload].isCheck = false;
+    }else{
+      if(state.carList.length-1 === payload){
+        state.isAllChecked = true
+      }
+      return state.carList[payload].isCheck = true;
+    }
   }
+
 }

@@ -194,6 +194,7 @@ export function goodsInfoMock(id){
               "down":"@natural(0, 5000)",
               "price":"@natural(1, 20)",
               "author":"@cname",
+              "isCheck":true,
               "date":"@datetime(\"yyyy-MM-dd HH:mm\")",
             },
             "review":[

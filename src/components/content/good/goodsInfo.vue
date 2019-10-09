@@ -214,13 +214,16 @@
                             //若是相同的商品，则将数量加一
                             this.$store.commit('addCarSum', index);
                             flag = false
+                            this.$toast.show('商品数量加一咯',1500);//提示框
                         }
                     });
                     if (flag) {
                         this.addProducts();
+                        this.$toast.show('已添加到购物车',1500);//提示框
                     }
                 } else {
                     this.addProducts();
+                    this.$toast.show('已添加到购物车',1500);//提示框
                 }
             },
             addProducts() {
@@ -231,6 +234,7 @@
                 products.author = this.getMesList().author;
                 products.mes = this.$route.params.title;
                 products.id = this.id;
+                products.isCheck = this.getMesList().isCheck;
                 products.sum = 1;
 
                 //将对象保存到vuex中展示购物车的信息
@@ -245,7 +249,7 @@
             scroll,
             reviews,
             backTop,
-            bottomShopCar
+            bottomShopCar,
         }
     }
 </script>

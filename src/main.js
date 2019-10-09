@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from "./store";
 import router from "./router";
-
+import Toast from "./components/commons/Toast/Toast";
 
 Vue.config.productionTip = false
 
@@ -21,6 +21,9 @@ this.$bus.$on('myChange', () => {
     // 拿到传过来的数据进行你的操作
 });
 * */
+
+//安装toast插件(自己封装的)
+Vue.use(Toast);
 
 
 new Vue({

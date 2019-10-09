@@ -3,7 +3,7 @@
     <div class="productsList" v-if="goodsList.length !== 0">
       <ul>
         <li class="clearfix" v-for="(item,index) in goodsList" :key="index">
-          <input type="checkbox" class="check">
+          <input type="checkbox" class="check" :checked="isCheck(index)" @click="check(index)">
           <img class="item_left" :src="item.img" alt="">
           <div class="item_right">
             <p>{{item.mes}}</p>
@@ -23,6 +23,7 @@
 </template>
 
 <script>
+
     export default {
         name: "productsList",
         props:{
@@ -32,6 +33,24 @@
                     return []
                 }
             }
+        },
+        data(){
+            return {
+
+            }
+        },
+        methods:{
+            //改变vuex中购物车选中状态
+            check(index){
+                this.$store.commit('setCheckState',index);
+            },
+            //获取vuex中购物车选中状态
+            isCheck(index) {
+                return this.$store.state.carList[index].isCheck;
+            }
+        },
+        computed:{
+
         }
     }
 </script>

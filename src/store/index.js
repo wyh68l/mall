@@ -8,7 +8,8 @@ Vue.use(vuex)
 const store = new vuex.Store({
   state:{
     carList:[],//购物车
-    priceSum:0//购物车总价格
+    priceSum:0,//购物车总价格
+    isAllChecked:true,//默认全选
   },
   mutations,
   getters

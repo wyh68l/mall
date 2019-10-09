@@ -52,7 +52,8 @@
         },
         computed:{
             //通过...mapGetters解构vuex中的getters来直接调用computed的计算属性
-            ...mapGetters(['goodsLength'])
+            ...mapGetters(['goodsLength'])//数组的解构
+            //...mapGetters({length:'goodsLength'})//对象的解构，可以取别名
         },
         components:{
             productsList,
