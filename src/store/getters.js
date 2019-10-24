@@ -28,6 +28,16 @@ export default {
     }else{
         return state.isAllChecked = true
     }
+  },
+  //结算数量，计算勾选了多少商品
+  getGoodsSum(state){
+    let index = 0;
+    state.carList.forEach((item) => {
+      if(item.isCheck){
+        index++;
+      }
+    })
+    return index;
   }
 
 }

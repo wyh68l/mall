@@ -5,7 +5,7 @@
         <div><input type="checkbox" :checked="getAllCheckState" @click="checked">全选</div>
         <div class="price">合计:<span>￥{{getPriceSum}}</span></div>
       </li>
-      <li><p>去结算({{goodsList.length}})</p></li>
+      <li><p @click="buy(getGoodsSum)">去结算({{getGoodsSum}})</p></li>
     </ul>
   </div>
 </template>
@@ -32,10 +32,19 @@
                 for (let i = 0; i < this.goodsList.length; i++) {
                     this.$store.commit('setCheckAllState', i);
                 }
+            },
+            buy(sum){
+                if(this.goodsList.length === 0){
+                    this.$toast.show('购物车没有商品哦~',2000)
+                }else if(this.goodsList.length !== 0 && sum === 0){
+                    this.$toast.show('还没有选择商品哦~',2000)
+                }else{
+                    this.$toast.show('没钱买个鬼~',2000)
+                }
             }
         },
         computed: {
-            ...mapGetters(['getPriceSum','getAllCheckState']),
+            ...mapGetters(['getPriceSum','getAllCheckState','getGoodsSum']),
         }
     }
 </script>

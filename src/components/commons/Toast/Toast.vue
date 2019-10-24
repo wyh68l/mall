@@ -14,8 +14,8 @@
             }
         },
         methods:{
-            show(res='哈哈哈',delay=2000){
-                this.mes = res
+            show(mes='哈哈哈',delay=20000){
+                this.mes = mes
                 this.isShow = true
                 setTimeout(()=>{
                     this.isShow = false;
@@ -35,6 +35,7 @@
     transform: translate(-50%,-50%);
     background-color: rgba(0,0,0,0.5);
     border-radius: 3vw;
+    z-index: 999;
 
     p{
       color: #fff;

@@ -211,19 +211,16 @@
                 if (this.$store.state.carList.length !== 0) {
                     this.$store.state.carList.find((item, index) => {
                         if (this.id === item.id) {
+                            flag = false;
                             //若是相同的商品，则将数量加一
-                            this.$store.commit('addCarSum', index);
-                            flag = false
-                            this.$toast.show('商品数量加一咯',1500);//提示框
+                            this.$store.dispatch('addCarSum', index).then(res =>{
+                                this.$toast.show(res,1500);//提示框
+                            });
                         }
                     });
-                    if (flag) {
-                        this.addProducts();
-                        this.$toast.show('已添加到购物车',1500);//提示框
-                    }
+                    if (flag) this.addProducts();
                 } else {
                     this.addProducts();
-                    this.$toast.show('已添加到购物车',1500);//提示框
                 }
             },
             addProducts() {
@@ -238,7 +235,9 @@
                 products.sum = 1;
 
                 //将对象保存到vuex中展示购物车的信息
-                this.$store.commit('addCar', products);
+                this.$store.dispatch('addCar', products).then(res =>{
+                    this.$toast.show(res,1500);//提示框
+                });
             }
 
         },

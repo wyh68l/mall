@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App.vue'
 import store from "./store";
 import router from "./router";
-import Toast from "./components/commons/Toast/Toast";
+import toast from "./components/commons/Toast";
 
 Vue.config.productionTip = false
 
@@ -23,7 +23,7 @@ this.$bus.$on('myChange', () => {
 * */
 
 //安装toast插件(自己封装的)
-Vue.use(Toast);
+Vue.use(toast);
 
 
 new Vue({

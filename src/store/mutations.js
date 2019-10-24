@@ -1,13 +1,13 @@
 export default {
-  //添加不同的商品
-  addCar(state,payload){
-    state.carList.push(payload)
-  },
-
-  //将相同的商品数量加一
-  addCarSum(state, payload) {
-    state.carList[payload].sum++;
-  },
+  // //添加不同的商品
+  // addCar(state,payload){
+  //   state.carList.push(payload)
+  // },
+  //
+  // //将相同的商品数量加一
+  // addCarSum(state, payload) {
+  //   state.carList[payload].sum++;
+  // },
 
   //改变购物车单选框选中状态
   setCheckState(state,payload) {
